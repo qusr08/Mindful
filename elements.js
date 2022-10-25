@@ -3,12 +3,12 @@
 TO DO
 
 # Calendar / Calendar Events
-* [ ] Shifting calendar days based on days of the week
+* [X] Shifting calendar days based on days of the week
 * [ ] Store data about events saved to calendar
 * [ ] Selecting day of the week and displaying the events for that day
-* [ ] Cycle through months and update day positions
+* [X] Cycle through months and update day positions
 * [ ] Display dots on days for events
-* [ ] Make proper calendar layout
+* [X] Make proper calendar layout
 
 + [ ] Adding a new event
 
@@ -17,52 +17,68 @@ TO DO
 
 */
 
+let today = new Date();
 
-// https://bobbyhadz.com/blog/javascript-get-number-of-days-in-month
-// https://artofmemory.com/blog/how-to-calculate-the-day-of-the-week/
+let calendarElement = document.getElementById("js-calendar");
+let calendarTitleElement = document.getElementById("js-calendar-title");
 
-window.customElements.define('c-calendar', class extends HTMLElement {
-    constructor() {
-        super();
+let currentMonth = 0;
+let currentYear = 0;
 
-        this.DAYS = ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'];
+window.onload = function (event) {
+    // Set the month to the current month
+    setCalendar(today.getMonth(), today.getFullYear());
+}
+
+function setCalendar(month, year) {
+    currentMonth = month;
+    currentYear = year;
+
+    // Remove all calendar boxes
+    while (calendarElement.firstChild) {
+        calendarElement.removeChild(calendarElement.firstChild);
     }
 
-    connectedCallback() {
-        for (let i = 0; i < 7; i++) {
-            let calendarDay = document.createElement("div");
-            calendarDay.classList.add("calendar-day");
-            calendarDay.innerHTML = `${this.DAYS[i]}`;
+    // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/Date
 
-            this.appendChild(calendarDay);
-        }
+    // Calculate the number of days in the month
+    // https://bobbyhadz.com/blog/javascript-get-number-of-days-in-month
+    let daysInMonth = new Date(year, month + 1, 0).getDate();
+    // Calculate the month of the week that the first day of the month starts on
+    let dayOfTheWeek = new Date(year, month, 1).getDay();
+    // Get the name of the month
+    // https://stackoverflow.com/questions/1643320/get-month-name-from-date/18648314#18648314
+    let monthName = new Date(year, month).toLocaleString('default', { month: 'long' });
 
-        for (let i = 0; i < 40; i++) {
-            let calendarBox = document.createElement("div");
-            calendarBox.classList.add("calendar-box");
-            calendarBox.innerHTML = `${i + 1}`;
+    // Set the title of the calendar to the right month and year
+    calendarTitleElement.innerHTML = `${monthName} ${year}`;
 
-            this.appendChild(calendarBox);
-        }
-    }
-});
-
-window.customElements.define('c-reminders', class extends HTMLElement {
-    constructor() {
-        super();
+    // Make dummy elements to offset the start of the month
+    for (let i = 0; i < dayOfTheWeek; i++) {
+        calendarElement.appendChild(document.createElement("div"));
     }
 
-    connectedCallback() {
+    // Make all calendar boxes
+    for (let i = 0; i < daysInMonth; i++) {
+        let calendarBox = document.createElement("div");
+        calendarBox.classList.add("calendar-box");
+        calendarBox.innerHTML = `${i + 1}`;
 
+        calendarElement.appendChild(calendarBox);
     }
-});
+}
 
-window.customElements.define('c-todo', class extends HTMLElement {
-    constructor() {
-        super();
-    }
+function goToNextMonth() {
+    let newMonth = (currentMonth + 1) % 12;
+    let newYear = currentYear + Number(currentMonth == 11);
 
-    connectedCallback() {
+    setCalendar(newMonth, newYear);
+}
 
-    }
-});
+function goToPreviousMonth() {
+    // let newMonth = (currentMonth - 1) % 12;
+    let newMonth = (currentMonth == 0 ? 11 : currentMonth - 1);
+    let newYear = currentYear - Number(currentMonth == 0);
+
+    setCalendar(newMonth, newYear);
+}

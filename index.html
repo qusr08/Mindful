@@ -13,19 +13,22 @@
 </head>
 
 <body>
-    <c-calendar></c-calendar>
-    <div class="events">
-        <c-reminders>
-            <h1>Calendar Events</h1>
-            <div>
-                This is some text to remind you things
-            </div>
-        </c-reminders>
-        <c-todo>
-            <div>
-
-            </div>
-        </c-todo>
+    <div class="calendar">
+        <div class="calendar-header">
+            <span class="calendar-seek-button" onclick="goToPreviousMonth();">&#60;</span>
+            <span id="js-calendar-title">Month XXXX</span>
+            <span class="calendar-seek-button" onclick="goToNextMonth();">&#62;</span>
+        </div>
+        <div class="calendar-days">
+            <span class="calendar-day">SUN</span>
+            <span class="calendar-day">MON</span>
+            <span class="calendar-day">TUE</span>
+            <span class="calendar-day">WED</span>
+            <span class="calendar-day">THU</span>
+            <span class="calendar-day">FRI</span>
+            <span class="calendar-day">SAT</span>
+        </div>
+        <div id="js-calendar"></div>
     </div>
 </body>
 
