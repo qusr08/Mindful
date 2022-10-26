@@ -23,8 +23,11 @@ TO DO
 
 let today = new Date();
 
-let calendarElement = document.getElementById("js-calendar");
-let calendarTitleElement = document.getElementById("js-calendar-title");
+let calendar = document.getElementById("js-calendar");
+let calendarTitle = document.getElementById("js-calendar-title");
+let calendarEvents = document.getElementById("js-calendar-events");
+let tasks = document.getElementById("js-tasks");
+let selectedCalendarBox = undefined;
 
 let currentMonth = 0;
 let currentYear = 0;
@@ -73,7 +76,7 @@ let JSONEventData = {
     }
 }
 
-window.onload = function(event) {
+window.onload = function (event) {
     // Set the month to the current month
     setCalendar(today.getMonth(), today.getFullYear());
 }
@@ -83,8 +86,8 @@ function setCalendar(month, year) {
     currentYear = year;
 
     // Remove all calendar boxes
-    while (calendarElement.firstChild) {
-        calendarElement.removeChild(calendarElement.firstChild);
+    while (calendar.firstChild) {
+        calendar.removeChild(calendar.firstChild);
     }
 
     // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/Date
@@ -99,37 +102,44 @@ function setCalendar(month, year) {
     let monthName = new Date(year, month).toLocaleString('default', { month: 'long' });
 
     // Set the title of the calendar to the right month and year
-    calendarTitleElement.innerHTML = `${monthName} ${year}`;
+    calendarTitle.innerHTML = `${monthName} ${year}`;
 
     // Make dummy elements to offset the start of the month
     for (let i = 0; i < dayOfTheWeek; i++) {
-        calendarElement.appendChild(document.createElement("div"));
+        calendar.appendChild(document.createElement("div"));
     }
 
     // Make all calendar boxes
     for (let i = 0; i < daysInMonth; i++) {
         let calendarBox = document.createElement("div");
         calendarBox.classList.add("calendar-box");
+        calendarBox.onclick = () => { selectDay(calendarBox, i + 1, monthName, year); };
+
+        // If the calendar box is today
+        // ... select the calendar box
+        if (today.getDate() - 1 == i && today.getMonth() == month && today.getFullYear() == year) {
+            selectDay(calendarBox, i + 1, monthName, year);
+        }
 
         // Load calendar box events
         let eventHTML = `<div class="calendar-box-events">`;
         let eventData = undefined;
         try {
             eventData = JSONEventData[String(year)][monthName.toLowerCase()][String(i + 1)];
-
             if (eventData != undefined) {
                 // https://stackoverflow.com/questions/29032525/how-to-access-first-element-of-json-object-array
                 let eventCount = 0;
-                while (eventData[String(eventCount)] != undefined) {
-                    eventHTML += `<span style="color: ${eventData[String(eventCount)].color};">●</span>`;
+                let event = undefined;
+                while ((event = eventData[String(eventCount)]) != undefined) {
+                    eventHTML += `<span style="color: ${event.color};">●</span>`;
                     eventCount++;
                 }
             }
-        } catch {}
+        } catch { }
         eventHTML += `</div>`;
         calendarBox.innerHTML = `<span>${i + 1}</span>${eventHTML}`;
 
-        calendarElement.appendChild(calendarBox);
+        calendar.appendChild(calendarBox);
     }
 }
 
@@ -146,4 +156,35 @@ function goToPreviousMonth() {
     let newYear = currentYear - Number(currentMonth == 0);
 
     setCalendar(newMonth, newYear);
+}
+
+function selectDay(calendarBox, day, monthName, year) {
+    // Set the input calendar box as selected
+    if (selectedCalendarBox != undefined) {
+        selectedCalendarBox.classList.remove("selected");
+    }
+    selectedCalendarBox = calendarBox;
+    calendarBox.classList.add("selected");
+
+    // Load the events into the calendar events section
+    let eventData = undefined;
+    calendarEvents.innerHTML = "";
+    try {
+        eventData = JSONEventData[String(year)][monthName.toLowerCase()][String(day)];
+        if (eventData != undefined) {
+            // https://stackoverflow.com/questions/29032525/how-to-access-first-element-of-json-object-array
+            let eventCount = 0;
+            let event = undefined;
+            while ((event = eventData[String(eventCount)]) != undefined) {
+                calendarEvents.innerHTML += `
+                    <div class="calendar-event">
+                        <span class="calendar-event-color" style="color: ${event.color};">●</span>
+                        <span class="calendar-event-time">${event.time}</span>
+                        <span class="calendar-event-details">${event.details}</span>
+                    </div>
+                `;
+                eventCount++;
+            }
+        }
+    } catch { }
 }
