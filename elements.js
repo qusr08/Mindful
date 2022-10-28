@@ -23,10 +23,15 @@ TO DO
 
 let today = new Date();
 
+let calendarParent = document.getElementById("js-calendar-parent");
 let calendar = document.getElementById("js-calendar");
 let calendarTitle = document.getElementById("js-calendar-title");
+let calendarTime = document.getElementById("js-time");
+let calendarTimeSuffix = document.getElementById("js-time-suffix");
+let calendarDate = document.getElementById("js-date");
 let calendarEvents = document.getElementById("js-calendar-events");
 let tasks = document.getElementById("js-tasks");
+
 let selectedCalendarBox = undefined;
 
 let currentMonth = 0;
@@ -79,6 +84,16 @@ let JSONEventData = {
 window.onload = function (event) {
     // Set the month to the current month
     setCalendar(today.getMonth(), today.getFullYear());
+
+    // Update the current date and time every second
+    refreshDateTime();
+    setInterval(refreshDateTime, 1000);
+}
+
+function refreshDateTime() {
+    calendarTime.innerHTML = `${today.toLocaleTimeString('en-us', { timeStyle: "short" }).slice(0, -3)}`;
+    calendarTimeSuffix.innerHTML = `${today.toLocaleTimeString('en-us', { timeStyle: "short" }).slice(-2)}`;
+    calendarDate.innerHTML = `${today.toLocaleDateString("en-us", { dateStyle: "full" }).split(",").splice(0, 2)}`;
 }
 
 function setCalendar(month, year) {
@@ -185,6 +200,22 @@ function selectDay(calendarBox, day, monthName, year) {
                 `;
                 eventCount++;
             }
+        } else {
+            calendarEvents.innerHTML += `
+                <div class="calendar-event">
+                        <span class="calendar-event-details">No events!</span>
+                </div>
+            `;
         }
     } catch { }
+}
+
+function clickHomeButton () {
+    calendarParent.style.opacity = 0;
+    setCalendar(today.getMonth(), today.getFullYear());
+}
+
+function clickCalendarButton() {
+    calendarParent.style.opacity = 1;
+    setCalendar(today.getMonth(), today.getFullYear());
 }

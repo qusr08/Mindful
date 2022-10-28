@@ -16,32 +16,32 @@
     <div class="sidebar">
         <div>
             <div>
-                <span id="js-time">12:00</span>
-                <span id="js-time-suffix">am</span>
+                <span id="js-time"></span>
+                <span id="js-time-suffix"></span>
             </div>
-            <span id="js-date">Wednesday, September 26th</span>
+            <span id="js-date"></span>
         </div>
-        <div id="js-calendar-events">
-            <div class="calendar-event">
-                <span class="calendar-event-color">●</span>
-                <span class="calendar-event-time">12:00am - 10:00pm</span>
-                <span class="calendar-event-details">This is some details about the event.</span>
+        <div style="position: relative;">
+            <div id="js-calendar-events"></div>
+            <img id="calendar-button" onclick="clickCalendarButton();" src="media/calendar-button.png">
+        </div>
+        <div style="position: relative;">
+            <div id="js-tasks">
+                <div class="task">
+                    <span class="task-details">No tasks!</span>
+                </div>
             </div>
-            <div class="calendar-event">
-                <span class="calendar-event-color">●</span>
-                <span class="calendar-event-time">12:00am - 10:00pm</span>
-                <span class="calendar-event-details">This is some details about the event.</span>
-            </div>
+            <img id="tasks-button" onclick="" src="media/task-button.png">
         </div>
-        <div id="js-tasks">
-
+        <div class="greeting">
+            <img id="profile-button" src="media/profile-button.png">
+            <span>Hello, Gaby</span>
         </div>
-        <span class="greeting"><img src="media/profile-button.png">Hello, Gaby</span>
     </div>
-    <div class="calendar">
+    <div id="js-calendar-parent">
         <div class="calendar-header">
             <span class="calendar-seek-button" onclick="goToPreviousMonth();">&#60;</span>
-            <span id="js-calendar-title">Month XXXX</span>
+            <span id="js-calendar-title"></span>
             <span class="calendar-seek-button" onclick="goToNextMonth();">&#62;</span>
         </div>
         <div class="calendar-days">
@@ -55,6 +55,7 @@
         </div>
         <div id="js-calendar"></div>
     </div>
+    <img id="home-button" onclick="clickHomeButton();" src="media/home-button.png">
 </body>
 
 </html>
