@@ -1,67 +1,65 @@
-/*
-
-TO DO
-
-# Calendar / Calendar Events
-* [X] Shifting calendar days based on days of the week
-* [ ] Store data about events saved to calendar
-* [ ] Selecting day of the week and displaying the events for that day
-* [X] Cycle through months and update day positions
-* [ ] Display dots on days for events
-* [X] Make proper calendar layout
-
-+ [ ] Adding a new event
-
-- [ ] Highlight 'today' on the calendar
-- [ ] Cycle through events on a day automatically if there are more than 3
-
-*/
-
 // https://javascript.plainenglish.io/3-ways-to-store-data-in-the-browser-db11c412104b
 
 'use strict';
 
-let today = new Date();
-
-let calendarParent = document.getElementById("js-calendar-parent");
 let calendar = document.getElementById("js-calendar");
-let calendarTitle = document.getElementById("js-calendar-title");
-let calendarTime = document.getElementById("js-time");
-let calendarTimeSuffix = document.getElementById("js-time-suffix");
-let calendarDate = document.getElementById("js-date");
-let calendarEvents = document.getElementById("js-calendar-events");
+let calendarContent = document.getElementById("js-calendar-content");
+let calendarMonth = document.getElementById("js-calendar-month");
+let time = document.getElementById("js-time");
+let timeSuffix = document.getElementById("js-time-suffix");
+let date = document.getElementById("js-date");
+let sidebarEvents = document.getElementById("js-sidebar-events");
+let sidebarTasks = document.getElementById("js-sidebar-tasks");
 let tasks = document.getElementById("js-tasks");
 
 let selectedCalendarBox = undefined;
+let selectedContent = undefined;
 
+let now;
 let currentMonth = 0;
 let currentYear = 0;
+
+let JSONTaskData = {
+    '0': 'this is a task'
+}
 
 let JSONEventData = {
     '2022': {
         'october': {
             '25': {
                 '0': {
-                    'time': '9:00am-10:00am',
-                    'details': 'this is an event',
+                    'time': '9:00AM - 10:00AM',
+                    'details': 'Breakfast',
                     'color': 'red'
                 },
                 '1': {
-                    'time': '9:00am-10:00am',
-                    'details': 'this is an event',
+                    'time': '12:00PM - 1:00PM',
+                    'details': 'Lunch',
                     'color': 'pink'
                 },
                 '2': {
-                    'time': '9:00am-10:00am',
-                    'details': 'this is an event',
+                    'time': '7:00PM - 8:00PM',
+                    'details': 'Dinner',
                     'color': 'yellow'
+                }
+            },
+            '31': {
+                '0': {
+                    'time': '9:00AM - 10:00AM',
+                    'details': 'breakfastkiwahwdoiuahewfosehfoaeshfaiuwhdaiuwhdiuawd',
+                    'color': 'green'
+                },
+                '1': {
+                    'time': '5:00PM - 9:00PM',
+                    'details': 'Meeting',
+                    'color': 'lightblue'
                 }
             }
         },
         'november': {
             '3': {
                 '0': {
-                    'time': '9:00am-10:00am',
+                    'time': '9:00AM - 10:00AM',
                     'details': 'this is an event',
                     'color': 'gold'
                 }
@@ -82,18 +80,20 @@ let JSONEventData = {
 }
 
 window.onload = function (event) {
-    // Set the month to the current month
-    setCalendar(today.getMonth(), today.getFullYear());
-
     // Update the current date and time every second
     refreshDateTime();
     setInterval(refreshDateTime, 1000);
+
+    // Set the month to the current month
+    setCalendar(now.getMonth(), now.getFullYear());
 }
 
 function refreshDateTime() {
-    calendarTime.innerHTML = `${today.toLocaleTimeString('en-us', { timeStyle: "short" }).slice(0, -3)}`;
-    calendarTimeSuffix.innerHTML = `${today.toLocaleTimeString('en-us', { timeStyle: "short" }).slice(-2)}`;
-    calendarDate.innerHTML = `${today.toLocaleDateString("en-us", { dateStyle: "full" }).split(",").splice(0, 2)}`;
+    now = new Date();
+
+    time.innerHTML = `${now.toLocaleTimeString('en-us', { timeStyle: "short" }).slice(0, -3)}`;
+    timeSuffix.innerHTML = `${now.toLocaleTimeString('en-us', { timeStyle: "short" }).slice(-2)}`;
+    date.innerHTML = `${now.toLocaleDateString("en-us", { dateStyle: "full" }).split(",").splice(0, 2)}`;
 }
 
 function setCalendar(month, year) {
@@ -101,8 +101,8 @@ function setCalendar(month, year) {
     currentYear = year;
 
     // Remove all calendar boxes
-    while (calendar.firstChild) {
-        calendar.removeChild(calendar.firstChild);
+    while (calendarContent.firstChild) {
+        calendarContent.removeChild(calendarContent.firstChild);
     }
 
     // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/Date
@@ -117,11 +117,11 @@ function setCalendar(month, year) {
     let monthName = new Date(year, month).toLocaleString('default', { month: 'long' });
 
     // Set the title of the calendar to the right month and year
-    calendarTitle.innerHTML = `${monthName} ${year}`;
+    calendarMonth.innerHTML = `${monthName} ${year}`;
 
     // Make dummy elements to offset the start of the month
     for (let i = 0; i < dayOfTheWeek; i++) {
-        calendar.appendChild(document.createElement("div"));
+        calendarContent.appendChild(document.createElement("div"));
     }
 
     // Make all calendar boxes
@@ -132,7 +132,7 @@ function setCalendar(month, year) {
 
         // If the calendar box is today
         // ... select the calendar box
-        if (today.getDate() - 1 == i && today.getMonth() == month && today.getFullYear() == year) {
+        if (now.getDate() - 1 == i && now.getMonth() == month && now.getFullYear() == year) {
             selectDay(calendarBox, i + 1, monthName, year);
         }
 
@@ -154,7 +154,7 @@ function setCalendar(month, year) {
         eventHTML += `</div>`;
         calendarBox.innerHTML = `<span>${i + 1}</span>${eventHTML}`;
 
-        calendar.appendChild(calendarBox);
+        calendarContent.appendChild(calendarBox);
     }
 }
 
@@ -183,7 +183,7 @@ function selectDay(calendarBox, day, monthName, year) {
 
     // Load the events into the calendar events section
     let eventData = undefined;
-    calendarEvents.innerHTML = "";
+    sidebarEvents.innerHTML = "";
     try {
         eventData = JSONEventData[String(year)][monthName.toLowerCase()][String(day)];
         if (eventData != undefined) {
@@ -191,7 +191,7 @@ function selectDay(calendarBox, day, monthName, year) {
             let eventCount = 0;
             let event = undefined;
             while ((event = eventData[String(eventCount)]) != undefined) {
-                calendarEvents.innerHTML += `
+                sidebarEvents.innerHTML += `
                     <div class="calendar-event">
                         <span class="calendar-event-color" style="color: ${event.color};">●</span>
                         <span class="calendar-event-time">${event.time}</span>
@@ -200,22 +200,36 @@ function selectDay(calendarBox, day, monthName, year) {
                 `;
                 eventCount++;
             }
-        } else {
-            calendarEvents.innerHTML += `
-                <div class="calendar-event">
-                        <span class="calendar-event-details">No events!</span>
-                </div>
-            `;
+
+            return;
         }
     } catch { }
-}
 
-function clickHomeButton () {
-    calendarParent.style.opacity = 0;
-    setCalendar(today.getMonth(), today.getFullYear());
+    sidebarEvents.innerHTML += `
+        <div class="calendar-event">
+                <span class="calendar-event-details">No events!</span>
+        </div>
+    `;
 }
-
 function clickCalendarButton() {
-    calendarParent.style.opacity = 1;
-    setCalendar(today.getMonth(), today.getFullYear());
+    setCalendar(now.getMonth(), now.getFullYear());
+    selectContent(calendar);
+}
+
+function clickTasksButton() {
+    selectContent(tasks);
+}
+
+function selectContent(element) {
+    if (selectedContent != undefined) {
+        selectedContent.classList.add("hidden");
+        selectedContent.classList.remove("shown");
+    }
+
+    if (element != undefined) {
+        element.classList.add("shown");
+        element.classList.remove("hidden");
+    }
+
+    selectedContent = element;
 }

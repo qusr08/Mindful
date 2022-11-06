@@ -1,5 +1,8 @@
 @import url('https://fonts.googleapis.com/css2?family=Red+Hat+Display:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
 :root {
+    --sidebar-size: 0.7fr;
+    --content-size: 2fr;
+    --homebutton-size: 0.1fr;
     --calendar-box-size: 100px;
     --calendar-box-spacing: 30px;
     --border-radius: 10px;
@@ -7,6 +10,7 @@
     --body-padding: 15px;
     --sidebar-gap: 40px;
     --transition-speed: 0.5s;
+    --eventtask-height: 67px;
 }
 
 ::selection {
@@ -26,12 +30,29 @@ body {
     height: calc(100vh - (var(--body-padding) * 2));
     width: calc(100vw - (var(--body-padding) * 2));
     display: grid;
-    grid-template-columns: 0.7fr 2fr 0.1fr;
+    grid-template-columns: var(--sidebar-size) var(--content-size) var(--homebutton-size);
     grid-template-areas: "sidebar content home";
-    justify-content: center;
+    gap: var(--body-padding);
     padding: var(--body-padding);
+    justify-content: center;
     cursor: default;
 }
+
+.content {
+    grid-area: content;
+}
+
+#home-button {
+    grid-area: home;
+    aspect-ratio: 1;
+    height: 4em;
+    align-self: center;
+    justify-self: end;
+    cursor: pointer;
+}
+
+
+/* #region Sidebar */
 
 .sidebar {
     grid-area: sidebar;
@@ -67,14 +88,16 @@ body {
     cursor: pointer;
 }
 
-#js-calendar-events,
-#js-tasks {
+#js-sidebar-events,
+#js-sidebar-tasks {
     padding: var(--body-padding);
     border: var(--border-width) solid white;
     border-radius: var(--border-radius);
     gap: var(--body-padding);
     display: flex;
     flex-flow: column nowrap;
+    justify-content: space-evenly;
+    height: calc((var(--eventtask-height) * 3) + (var(--body-padding) * 2));
 }
 
 .calendar-event,
@@ -101,6 +124,9 @@ body {
 .task-details {
     grid-area: details;
     font-size: 1.5em;
+    height: 1.5em;
+    text-overflow: ellipsis;
+    overflow: hidden;
 }
 
 #calendar-button,
@@ -113,21 +139,34 @@ body {
     aspect-ratio: 1;
 }
 
-#home-button {
-    grid-area: home;
-    aspect-ratio: 1;
-    height: 4em;
-    align-self: center;
-    cursor: pointer;
+
+/* #endregion */
+
+
+/* #region Tasks */
+
+#js-tasks {
+    display: flex;
+    flex-flow: column nowrap;
+    gap: calc(var(--body-padding) / 2);
+    padding: var(--body-padding);
+    border: var(--border-width) solid white;
+    border-radius: var(--border-radius);
+    width: 50%;
 }
 
-#js-calendar-parent {
-    grid-area: content;
+
+/* #endregion */
+
+
+/* #region Calendar */
+
+#js-calendar {
     display: flex;
-    align-self: center;
     flex-flow: column nowrap;
     gap: calc(var(--calendar-box-spacing) / 2);
     margin: 0px auto 0px auto;
+    width: fit-content;
 }
 
 .calendar-header {
@@ -137,7 +176,7 @@ body {
     font-size: 5em;
 }
 
-#js-calendar {
+#js-calendar-content {
     display: grid;
     align-self: center;
     justify-self: center;
@@ -189,10 +228,58 @@ body {
 .calendar-box-events {
     display: flex;
     flex-flow: row nowrap;
-    justify-content: center;
+    justify-content: space-evenly;
     align-items: flex-end;
 }
 
 .calendar-box-events>span {
     height: 0px;
+}
+
+
+/* #endregion */
+
+.hidden {
+    animation-name: hide;
+    animation-duration: calc(var(--transition-speed) * 2);
+    animation-fill-mode: forwards;
+}
+
+.shown {
+    animation-name: show;
+    animation-duration: calc(var(--transition-speed) * 2);
+    animation-fill-mode: forwards;
+}
+
+@keyframes hide {
+    from {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0;
+        visibility: hidden;
+        height: 0px;
+    }
+    to {
+        opacity: 0;
+        visibility: hidden;
+        height: 0px;
+    }
+}
+
+@keyframes show {
+    from {
+        opacity: 0;
+        visibility: visible;
+        height: 0px;
+    }
+    50% {
+        opacity: 0;
+        visibility: visible;
+        height: 0px;
+    }
+    to {
+        opacity: 1;
+        height: inherit;
+    }
 }
