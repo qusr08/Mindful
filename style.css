@@ -1,15 +1,15 @@
 @import url('https://fonts.googleapis.com/css2?family=Red+Hat+Display:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
 :root {
-    --sidebar-size: 0.7fr;
+    --sidebar-size: 0.8fr;
     --content-size: 2fr;
     --homebutton-size: 0.1fr;
-    --calendar-box-size: 100px;
-    --calendar-box-spacing: 30px;
+    --calendar-box-size: 115px;
+    --calendar-box-spacing: 20px;
     --border-radius: 10px;
     --border-width: 3px;
     --body-padding: 15px;
     --sidebar-gap: 40px;
-    --transition-speed: 0.5s;
+    --transition-speed: 0.0s;
     --eventtask-height: 67px;
 }
 
@@ -27,19 +27,20 @@ body {
     background-color: black;
     overflow: hidden;
     color: white;
-    height: calc(100vh - (var(--body-padding) * 2));
-    width: calc(100vw - (var(--body-padding) * 2));
+    width: 100vw;
+    height: 100vh;
     display: grid;
     grid-template-columns: var(--sidebar-size) var(--content-size) var(--homebutton-size);
     grid-template-areas: "sidebar content home";
-    gap: var(--body-padding);
-    padding: var(--body-padding);
-    justify-content: center;
     cursor: default;
 }
 
 .content {
     grid-area: content;
+    margin: var(--body-padding);
+    align-self: center;
+    height: fit-content;
+    position: relative;
 }
 
 #home-button {
@@ -49,6 +50,7 @@ body {
     align-self: center;
     justify-self: end;
     cursor: pointer;
+    margin: var(--body-padding);
 }
 
 
@@ -56,6 +58,7 @@ body {
 
 .sidebar {
     grid-area: sidebar;
+    margin: var(--body-padding);
     display: flex;
     flex-flow: column nowrap;
     justify-content: space-between;
@@ -149,10 +152,10 @@ body {
     display: flex;
     flex-flow: column nowrap;
     gap: calc(var(--body-padding) / 2);
-    padding: var(--body-padding);
     border: var(--border-width) solid white;
     border-radius: var(--border-radius);
     width: 50%;
+    min-height: 75vh;
 }
 
 
@@ -173,7 +176,21 @@ body {
     display: flex;
     flex-flow: row nowrap;
     justify-content: space-between;
-    font-size: 5em;
+}
+
+.calendar-title {
+    display: flex;
+    flex-flow: column nowrap;
+    align-items: center;
+    width: 200px;
+}
+
+#js-calendar-month {
+    font-size: 3em;
+}
+
+#js-calendar-year {
+    font-size: 1.5em;
 }
 
 #js-calendar-content {
@@ -185,9 +202,11 @@ body {
     gap: var(--calendar-box-spacing);
 }
 
-.calendar-seek-button {
+.calendar-seek-button,
+.calendar-add-button {
     background-color: transparent;
     cursor: pointer;
+    font-size: 5em;
 }
 
 .calendar-days {
@@ -206,19 +225,18 @@ body {
 }
 
 .calendar-box {
-    align-items: center;
     aspect-ratio: 1;
     border: var(--border-width) solid white;
     border-radius: var(--border-radius);
     font-size: 2.5em;
     width: var(--calendar-box-size);
+    align-items: center;
     cursor: pointer;
     transition: background-color var(--transition-speed) ease, color var(--transition-speed) ease;
 }
 
 .calendar-box.selected {
-    background-color: white;
-    color: black;
+    border-color: red;
 }
 
 .calendar-box>span {
@@ -240,15 +258,18 @@ body {
 /* #endregion */
 
 .hidden {
-    animation-name: hide;
-    animation-duration: calc(var(--transition-speed) * 2);
-    animation-fill-mode: forwards;
+    display: none !important;
+    visibility: hidden;
+    /* animation-name: hide; */
+    /* animation-duration: calc(var(--transition-speed) * 2); */
+    /* animation-fill-mode: forwards; */
 }
 
 .shown {
-    animation-name: show;
-    animation-duration: calc(var(--transition-speed) * 2);
-    animation-fill-mode: forwards;
+    visibility: visible;
+    /* animation-name: show; */
+    /* animation-duration: calc(var(--transition-speed) * 2); */
+    /* animation-fill-mode: forwards; */
 }
 
 @keyframes hide {

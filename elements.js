@@ -5,6 +5,7 @@
 let calendar = document.getElementById("js-calendar");
 let calendarContent = document.getElementById("js-calendar-content");
 let calendarMonth = document.getElementById("js-calendar-month");
+let calendarYear = document.getElementById("js-calendar-year");
 let time = document.getElementById("js-time");
 let timeSuffix = document.getElementById("js-time-suffix");
 let date = document.getElementById("js-date");
@@ -79,7 +80,7 @@ let JSONEventData = {
     }
 }
 
-window.onload = function (event) {
+window.onload = function(event) {
     // Update the current date and time every second
     refreshDateTime();
     setInterval(refreshDateTime, 1000);
@@ -117,7 +118,8 @@ function setCalendar(month, year) {
     let monthName = new Date(year, month).toLocaleString('default', { month: 'long' });
 
     // Set the title of the calendar to the right month and year
-    calendarMonth.innerHTML = `${monthName} ${year}`;
+    calendarMonth.innerHTML = `${monthName}`;
+    calendarYear.innerHTML = `${year}`;
 
     // Make dummy elements to offset the start of the month
     for (let i = 0; i < dayOfTheWeek; i++) {
@@ -150,7 +152,7 @@ function setCalendar(month, year) {
                     eventCount++;
                 }
             }
-        } catch { }
+        } catch {}
         eventHTML += `</div>`;
         calendarBox.innerHTML = `<span>${i + 1}</span>${eventHTML}`;
 
@@ -203,7 +205,7 @@ function selectDay(calendarBox, day, monthName, year) {
 
             return;
         }
-    } catch { }
+    } catch {}
 
     sidebarEvents.innerHTML += `
         <div class="calendar-event">
@@ -211,6 +213,7 @@ function selectDay(calendarBox, day, monthName, year) {
         </div>
     `;
 }
+
 function clickCalendarButton() {
     setCalendar(now.getMonth(), now.getFullYear());
     selectContent(calendar);
@@ -218,6 +221,11 @@ function clickCalendarButton() {
 
 function clickTasksButton() {
     selectContent(tasks);
+}
+
+function clickHomeButton() {
+    setCalendar(now.getMonth(), now.getFullYear());
+    selectContent(undefined);
 }
 
 function selectContent(element) {

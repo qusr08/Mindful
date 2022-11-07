@@ -41,9 +41,14 @@
     <div class="content">
         <div id="js-calendar" class="hidden">
             <div class="calendar-header">
+                <span></span>
                 <span class="calendar-seek-button" onclick="goToPreviousMonth();">&#60;</span>
-                <span id="js-calendar-month"></span>
+                <div class="calendar-title">
+                    <span id="js-calendar-month"></span>
+                    <span id="js-calendar-year"></span>
+                </div>
                 <span class="calendar-seek-button" onclick="goToNextMonth();">&#62;</span>
+                <span class="calendar-add-button" onclick="clickAddButton();">+</span>
             </div>
             <div class="calendar-days">
                 <span class="calendar-day">S</span>
@@ -58,7 +63,7 @@
         </div>
         <div id="js-tasks" class="hidden"></div>
     </div>
-    <img id="home-button" onclick="selectContent(undefined);" src="media/home-button.png">
+    <img id="home-button" onclick="clickHomeButton();" src="media/home-button.png">
 </body>
 
 </html>
