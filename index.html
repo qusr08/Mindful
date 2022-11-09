@@ -20,6 +20,10 @@
                 <span id="js-time-suffix"></span>
             </div>
             <span id="js-date"></span>
+            <div class="weather">
+                <img id="weather-button" onclick="clickWeatherButton();" src="media/weather-button.png">
+                <span>64°</span>
+            </div>
         </div>
         <div style="position: relative;">
             <div id="js-sidebar-events"></div>
@@ -34,7 +38,7 @@
             <img id="tasks-button" onclick="clickTasksButton();" src="media/task-button.png">
         </div>
         <div class="greeting">
-            <img id="profile-button" src="media/profile-button.png">
+            <img id="profile-button" onclick="clickProfileButton();" src="media/profile-button.png">
             <span>Hello, Gaby</span>
         </div>
     </div>
@@ -61,7 +65,18 @@
             </div>
             <div id="js-calendar-content"></div>
         </div>
-        <div id="js-tasks" class="hidden"></div>
+        <div id="js-tasks" class="hidden">
+            <div id="js-tasks-content">
+
+            </div>
+            <span class="tasks-add-button">+</span>
+        </div>
+        <div id="js-weather" class="hidden">
+            <img src="media/weather-tab.png">
+        </div>
+        <div id="js-profile" class="hidden">
+
+        </div>
     </div>
     <img id="home-button" onclick="clickHomeButton();" src="media/home-button.png">
 </body>

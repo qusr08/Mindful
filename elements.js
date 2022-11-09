@@ -12,6 +12,9 @@ let date = document.getElementById("js-date");
 let sidebarEvents = document.getElementById("js-sidebar-events");
 let sidebarTasks = document.getElementById("js-sidebar-tasks");
 let tasks = document.getElementById("js-tasks");
+let tasksContent = document.getElementById("js-tasks-content");
+let weather = document.getElementById("js-weather");
+let profile = document.getElementById("js-profile");
 
 let selectedCalendarBox = undefined;
 let selectedContent = undefined;
@@ -21,7 +24,8 @@ let currentMonth = 0;
 let currentYear = 0;
 
 let JSONTaskData = {
-    '0': 'this is a task'
+    '0': 'this is a task',
+    '1': 'this is another task'
 }
 
 let JSONEventData = {
@@ -87,6 +91,8 @@ window.onload = function(event) {
 
     // Set the month to the current month
     setCalendar(now.getMonth(), now.getFullYear());
+
+    updateTasks();
 }
 
 function refreshDateTime() {
@@ -207,11 +213,44 @@ function selectDay(calendarBox, day, monthName, year) {
         }
     } catch {}
 
-    sidebarEvents.innerHTML += `
+    sidebarEvents.innerHTML = `
         <div class="calendar-event">
                 <span class="calendar-event-details">No events!</span>
         </div>
     `;
+}
+
+function updateTasks () {
+    sidebarTasks.innerHTML = "";
+    tasksContent.innerHTML = `<span class="tasks-title">To-Do List</span>`;
+    
+    // https://stackoverflow.com/questions/29032525/how-to-access-first-element-of-json-object-array
+    let taskCount = 0;
+    let task = undefined;
+    while ((task = JSONTaskData[String(taskCount)]) != undefined) {
+        let newTask = `
+            <div class="task">
+                <span class="task-bullet">○</span>
+                <span class="task-details">${task}</span>
+            </div>
+        `;
+
+        sidebarTasks.innerHTML += newTask;
+        tasksContent.innerHTML += newTask;
+
+        taskCount++;
+    }
+
+    if (taskCount == 0) {
+        let noTasks = `
+            <div class="task">
+                <span class="task-details">No tasks!</span>
+            </div>
+        `;
+
+        sidebarTasks.innerHTML = noTasks;
+        tasksContent.innerHTML = noTasks;
+    }
 }
 
 function clickCalendarButton() {
@@ -226,6 +265,14 @@ function clickTasksButton() {
 function clickHomeButton() {
     setCalendar(now.getMonth(), now.getFullYear());
     selectContent(undefined);
+}
+
+function clickWeatherButton () {
+    selectContent(weather);
+}
+
+function clickProfileButton() {
+    selectContent(profile);
 }
 
 function selectContent(element) {
