@@ -1,31 +1,76 @@
+/*
+
+- on screen keyboard layout
+- on screen keyboard functionality
+- selecting text boxes and having keyboard type into them
+- panel that displays on screen keyboard
+- adding events to calendar
+- adding tasks
+
+- make image of raspberry pi to send to babe
+
+*/
+
 // https://javascript.plainenglish.io/3-ways-to-store-data-in-the-browser-db11c412104b
 
 'use strict';
 
-let calendar = document.getElementById("js-calendar");
-let calendarContent = document.getElementById("js-calendar-content");
-let calendarMonth = document.getElementById("js-calendar-month");
-let calendarYear = document.getElementById("js-calendar-year");
 let time = document.getElementById("js-time");
 let timeSuffix = document.getElementById("js-time-suffix");
 let date = document.getElementById("js-date");
 let sidebarEvents = document.getElementById("js-sidebar-events");
 let sidebarTasks = document.getElementById("js-sidebar-tasks");
+let selectedContent = undefined;
+
+let calendar = document.getElementById("js-calendar");
+let calendarContent = document.getElementById("js-calendar-content");
+let calendarMonth = document.getElementById("js-calendar-month");
+let calendarYear = document.getElementById("js-calendar-year");
+let selectedCalendarBox = undefined;
+
+let weather = document.getElementById("js-weather");
+
+let profile = document.getElementById("js-profile");
+let profileAccountButton = document.getElementById("js-profile-account-button");
+let profileGeneralButton = document.getElementById("js-profile-general-button");
+let profileDisplayButton = document.getElementById("js-profile-display-button");
+let profileConnectionsButton = document.getElementById("js-profile-connections-button");
+let profileAccountTab = document.getElementById("js-profile-account");
+let profileGeneralTab = document.getElementById("js-profile-general");
+let profileDisplayTab = document.getElementById("js-profile-display");
+let profileConnectionsTab = document.getElementById("js-profile-connections");
+let selectedProfileContent = undefined;
+let selectedProfileButton = undefined;
+
 let tasks = document.getElementById("js-tasks");
 let tasksContent = document.getElementById("js-tasks-content");
-let weather = document.getElementById("js-weather");
-let profile = document.getElementById("js-profile");
 
-let selectedCalendarBox = undefined;
-let selectedContent = undefined;
 
 let now;
 let currentMonth = 0;
 let currentYear = 0;
 
 let JSONTaskData = {
-    '0': 'this is a task',
-    '1': 'this is another task'
+    '0': {
+        'details': 'Fold laundry',
+        'isDone': false
+    },
+    '1': {
+        'details': 'Take out trash',
+        'isDone': false
+    },
+    '2': {
+        'details': 'Vacuum downstairs',
+        'isDone': true
+    },
+    '3': {
+        'details': 'Walk dog',
+        'isDone': true
+    },
+    '4': {
+        'details': 'Organize closet',
+        'isDone': true
+    }
 }
 
 let JSONEventData = {
@@ -100,7 +145,7 @@ function refreshDateTime() {
 
     time.innerHTML = `${now.toLocaleTimeString('en-us', { timeStyle: "short" }).slice(0, -3)}`;
     timeSuffix.innerHTML = `${now.toLocaleTimeString('en-us', { timeStyle: "short" }).slice(-2)}`;
-    date.innerHTML = `${now.toLocaleDateString("en-us", { dateStyle: "full" }).split(",").splice(0, 2)}`;
+    date.innerHTML = `${now.toLocaleDateString("en-us", { dateStyle: "full" }).split(",").splice(0, 1) + ", " + now.toLocaleDateString("en-us", { dateStyle: "medium" }).split(",").splice(0, 1)}`;
 }
 
 function setCalendar(month, year) {
@@ -220,22 +265,24 @@ function selectDay(calendarBox, day, monthName, year) {
     `;
 }
 
-function updateTasks () {
+function updateTasks() {
     sidebarTasks.innerHTML = "";
     tasksContent.innerHTML = `<span class="tasks-title">To-Do List</span>`;
-    
+
     // https://stackoverflow.com/questions/29032525/how-to-access-first-element-of-json-object-array
     let taskCount = 0;
     let task = undefined;
     while ((task = JSONTaskData[String(taskCount)]) != undefined) {
         let newTask = `
             <div class="task">
-                <span class="task-bullet">○</span>
-                <span class="task-details">${task}</span>
+                <span class="task-bullet ${task.isDone ? 'done' : ''}">○</span>
+                <span class="task-details ${task.isDone ? 'done' : ''}">${task.details}</span>
             </div>
         `;
 
-        sidebarTasks.innerHTML += newTask;
+        if (!task.isDone) {
+            sidebarTasks.innerHTML += newTask;
+        }
         tasksContent.innerHTML += newTask;
 
         taskCount++;
@@ -267,12 +314,36 @@ function clickHomeButton() {
     selectContent(undefined);
 }
 
-function clickWeatherButton () {
+function clickWeatherButton() {
     selectContent(weather);
 }
 
 function clickProfileButton() {
     selectContent(profile);
+    selectProfileContent(profileAccountButton, profileAccountTab);
+}
+
+function selectProfileContent(button, element) {
+    if (selectedProfileContent != undefined) {
+        selectedProfileContent.classList.add("hidden");
+        selectedProfileContent.classList.remove("shown");
+    }
+
+    if (element != undefined) {
+        element.classList.add("shown");
+        element.classList.remove("hidden");
+    }
+
+    if (selectedProfileButton != undefined) {
+        selectedProfileButton.classList.remove("selected");
+    }
+
+    if (button != undefined) {
+        button.classList.add("selected");
+    }
+
+    selectedProfileContent = element;
+    selectedProfileButton = button;
 }
 
 function selectContent(element) {

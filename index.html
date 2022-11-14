@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="style.css">
     <script src="elements.js" defer></script>
 
-    <title>Smart Calendar</title>
+    <title>Mindful</title>
 </head>
 
 <body>
@@ -22,7 +22,7 @@
             <span id="js-date"></span>
             <div class="weather">
                 <img id="weather-button" onclick="clickWeatherButton();" src="media/weather-button.png">
-                <span>64°</span>
+                <span>65°</span>
             </div>
         </div>
         <div style="position: relative;">
@@ -66,16 +66,23 @@
             <div id="js-calendar-content"></div>
         </div>
         <div id="js-tasks" class="hidden">
-            <div id="js-tasks-content">
-
-            </div>
+            <div id="js-tasks-content"></div>
             <span class="tasks-add-button">+</span>
         </div>
         <div id="js-weather" class="hidden">
             <img src="media/weather-tab.png">
         </div>
         <div id="js-profile" class="hidden">
-
+            <div class="profile-buttons">
+                <span id="js-profile-account-button" class="profile-button" onclick="selectProfileContent(profileAccountButton, profileAccountTab);">Account</span>
+                <span id="js-profile-general-button" class="profile-button" onclick="selectProfileContent(profileGeneralButton, profileGeneralTab);">General</span>
+                <span id="js-profile-display-button" class="profile-button" onclick="selectProfileContent(profileDisplayButton, profileDisplayTab);">Display</span>
+                <span id="js-profile-connections-button" class="profile-button" onclick="selectProfileContent(profileConnectionsButton, profileConnectionsTab);">Connections</span>
+            </div>
+            <img id="js-profile-account" class="hidden" src="media/profile-account-tab.png">
+            <img id="js-profile-general" class="hidden" src="media/profile-general-tab.png">
+            <img id="js-profile-display" class="hidden" src="media/profile-display-tab.png">
+            <img id="js-profile-connections" class="hidden" src="media/profile-connections-tab.png">
         </div>
     </div>
     <img id="home-button" onclick="clickHomeButton();" src="media/home-button.png">
