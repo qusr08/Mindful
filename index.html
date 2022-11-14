@@ -45,7 +45,10 @@
     <div class="content">
         <div id="js-calendar" class="hidden">
             <div class="calendar-header">
-                <span></span>
+                <div class="calendar-view-buttons">
+                    <img src="media/monthly-calendar-button.png">
+                    <img src="media/weekly-calendar-button.png">
+                </div>
                 <span class="calendar-seek-button" onclick="goToPreviousMonth();">&#60;</span>
                 <div class="calendar-title">
                     <span id="js-calendar-month"></span>
@@ -83,6 +86,59 @@
             <img id="js-profile-general" class="hidden" src="media/profile-general-tab.png">
             <img id="js-profile-display" class="hidden" src="media/profile-display-tab.png">
             <img id="js-profile-connections" class="hidden" src="media/profile-connections-tab.png">
+        </div>
+        <div id="js-keyboard" class="hidden">
+            <div class="keyboard">
+                <div class="keyboard-row">
+                    <span class="keyboard-key" onclick="clickKeyboardButton('1');">1</span>
+                    <span class="keyboard-key" onclick="clickKeyboardButton('2');">2</span>
+                    <span class="keyboard-key" onclick="clickKeyboardButton('3');">3</span>
+                    <span class="keyboard-key" onclick="clickKeyboardButton('4');">4</span>
+                    <span class="keyboard-key" onclick="clickKeyboardButton('5');">5</span>
+                    <span class="keyboard-key" onclick="clickKeyboardButton('6');">6</span>
+                    <span class="keyboard-key" onclick="clickKeyboardButton('7');">7</span>
+                    <span class="keyboard-key" onclick="clickKeyboardButton('8');">8</span>
+                    <span class="keyboard-key" onclick="clickKeyboardButton('9');">9</span>
+                    <span class="keyboard-key" onclick="clickKeyboardButton('0');">0</span>
+                </div>
+                <div class="keyboard-row">
+                    <span class="keyboard-key" onclick="clickKeyboardButton('q');">q</span>
+                    <span class="keyboard-key" onclick="clickKeyboardButton('w');">w</span>
+                    <span class="keyboard-key" onclick="clickKeyboardButton('e');">e</span>
+                    <span class="keyboard-key" onclick="clickKeyboardButton('r');">r</span>
+                    <span class="keyboard-key" onclick="clickKeyboardButton('t');">t</span>
+                    <span class="keyboard-key" onclick="clickKeyboardButton('y');">y</span>
+                    <span class="keyboard-key" onclick="clickKeyboardButton('u');">u</span>
+                    <span class="keyboard-key" onclick="clickKeyboardButton('i');">i</span>
+                    <span class="keyboard-key" onclick="clickKeyboardButton('o');">o</span>
+                    <span class="keyboard-key" onclick="clickKeyboardButton('p');">p</span>
+                </div>
+                <div class="keyboard-row">
+                    <span class="keyboard-key" onclick="clickKeyboardButton('a');">a</span>
+                    <span class="keyboard-key" onclick="clickKeyboardButton('s');">s</span>
+                    <span class="keyboard-key" onclick="clickKeyboardButton('d');">d</span>
+                    <span class="keyboard-key" onclick="clickKeyboardButton('f');">f</span>
+                    <span class="keyboard-key" onclick="clickKeyboardButton('g');">g</span>
+                    <span class="keyboard-key" onclick="clickKeyboardButton('h');">h</span>
+                    <span class="keyboard-key" onclick="clickKeyboardButton('j');">j</span>
+                    <span class="keyboard-key" onclick="clickKeyboardButton('k');">k</span>
+                    <span class="keyboard-key" onclick="clickKeyboardButton('l');">l</span>
+                </div>
+                <div class="keyboard-row">
+                    <!-- <span class="keyboard-key" onclick="clickKeyboardButton('^');" style="aspect-ratio: unset; width: 90px;">caps</span> -->
+                    <span class="keyboard-key" onclick="clickKeyboardButton('z');">z</span>
+                    <span class="keyboard-key" onclick="clickKeyboardButton('x');">x</span>
+                    <span class="keyboard-key" onclick="clickKeyboardButton('c');">c</span>
+                    <span class="keyboard-key" onclick="clickKeyboardButton('v');">v</span>
+                    <span class="keyboard-key" onclick="clickKeyboardButton('b');">b</span>
+                    <span class="keyboard-key" onclick="clickKeyboardButton('n');">n</span>
+                    <span class="keyboard-key" onclick="clickKeyboardButton('m');">m</span>
+                    <span class="keyboard-key" onclick="clickKeyboardButton('<');" style="aspect-ratio: unset; width: 195px;">backspace</span>
+                </div>
+                <div class="keyboard-row">
+                    <span class="keyboard-key" onclick="clickKeyboardButton('_');" style="aspect-ratio: unset; width: 500px; height: 55px;">space</span>
+                </div>
+            </div>
         </div>
     </div>
     <img id="home-button" onclick="clickHomeButton();" src="media/home-button.png">

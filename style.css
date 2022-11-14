@@ -38,8 +38,10 @@ body {
 .content {
     grid-area: content;
     margin: var(--body-padding);
-    align-self: center;
-    height: fit-content;
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: center;
+    height: calc(100vh - var(--body-padding) * 2);
     position: relative;
 }
 
@@ -326,6 +328,53 @@ body {
 
 .calendar-box-events>span {
     height: 0px;
+}
+
+.calendar-view-buttons {
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: center;
+    gap: 10px;
+}
+
+
+/* #endregion */
+
+
+/* #region Keyboard */
+
+#js-keyboard {
+    width: 60%;
+    position: absolute;
+    right: 0px;
+    top: calc(var(--body-padding) * -1);
+    min-height: 100vh;
+    background-color: black;
+    border-left: var(--border-width) solid white;
+    border-right: var(--border-width) solid white;
+}
+
+.keyboard {
+    display: flex;
+    flex-flow: column nowrap;
+    gap: 10px;
+    width: 100%;
+}
+
+.keyboard-row {
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: center;
+    gap: 10px;
+}
+
+.keyboard-key {
+    font-size: 2em;
+    aspect-ratio: 1;
+    border: var(--border-width) solid white;
+    border-radius: 10px;
+    width: 55px;
+    text-align: center;
 }
 
 

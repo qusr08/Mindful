@@ -1,11 +1,10 @@
 /*
 
-- on screen keyboard layout
 - on screen keyboard functionality
 - selecting text boxes and having keyboard type into them
-- panel that displays on screen keyboard
 - adding events to calendar
 - adding tasks
+- weekly view of calender (shit fart)
 
 - make image of raspberry pi to send to babe
 
@@ -45,7 +44,6 @@ let selectedProfileButton = undefined;
 let tasks = document.getElementById("js-tasks");
 let tasksContent = document.getElementById("js-tasks-content");
 
-
 let now;
 let currentMonth = 0;
 let currentYear = 0;
@@ -61,7 +59,7 @@ let JSONTaskData = {
     },
     '2': {
         'details': 'Vacuum downstairs',
-        'isDone': true
+        'isDone': false
     },
     '3': {
         'details': 'Walk dog',
@@ -75,8 +73,8 @@ let JSONTaskData = {
 
 let JSONEventData = {
     '2022': {
-        'october': {
-            '25': {
+        'november': {
+            '14': {
                 '0': {
                     'time': '9:00AM - 10:00AM',
                     'details': 'Breakfast',
@@ -93,7 +91,7 @@ let JSONEventData = {
                     'color': 'yellow'
                 }
             },
-            '31': {
+            '27': {
                 '0': {
                     'time': '9:00AM - 10:00AM',
                     'details': 'breakfastkiwahwdoiuahewfosehfoaeshfaiuwhdaiuwhdiuawd',
@@ -106,7 +104,7 @@ let JSONEventData = {
                 }
             }
         },
-        'november': {
+        'december': {
             '3': {
                 '0': {
                     'time': '9:00AM - 10:00AM',
