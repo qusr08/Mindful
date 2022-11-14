@@ -1,9 +1,5 @@
 /*
 
-- on screen keyboard functionality
-- selecting text boxes and having keyboard type into them
-- adding events to calendar
-- adding tasks
 - weekly view of calender (shit fart)
 
 - make image of raspberry pi to send to babe
@@ -44,6 +40,16 @@ let selectedProfileButton = undefined;
 let tasks = document.getElementById("js-tasks");
 let tasksContent = document.getElementById("js-tasks-content");
 
+let keyboard = document.getElementById("js-keyboard");
+let nameTextBoxParent = document.getElementById("js-keyboard-name");
+let dateTextBoxParent = document.getElementById("js-keyboard-date");
+let timeTextBoxParent = document.getElementById("js-keyboard-time");
+let nameTextBox = document.getElementById("js-keyboard-name-box");
+let dateTextBox = document.getElementById("js-keyboard-date-box");
+let timeTextBox = document.getElementById("js-keyboard-time-box");
+let selectedKeyboardTextBox = undefined;
+let isAddingEvent = false;
+
 let now;
 let currentMonth = 0;
 let currentYear = 0;
@@ -55,72 +61,44 @@ let JSONTaskData = {
     },
     '1': {
         'details': 'Take out trash',
-        'isDone': false
+        'isDone': true
     },
     '2': {
         'details': 'Vacuum downstairs',
-        'isDone': false
-    },
-    '3': {
-        'details': 'Walk dog',
-        'isDone': true
-    },
-    '4': {
-        'details': 'Organize closet',
         'isDone': true
     }
 }
 
 let JSONEventData = {
     '2022': {
-        'november': {
+        '11': {
             '14': {
                 '0': {
-                    'time': '9:00AM - 10:00AM',
+                    'time': '9:00AM',
                     'details': 'Breakfast',
                     'color': 'red'
                 },
                 '1': {
-                    'time': '12:00PM - 1:00PM',
+                    'time': '12:00PM',
                     'details': 'Lunch',
                     'color': 'pink'
                 },
                 '2': {
-                    'time': '7:00PM - 8:00PM',
+                    'time': '7:00PM',
                     'details': 'Dinner',
                     'color': 'yellow'
                 }
             },
-            '27': {
+            '26': {
                 '0': {
-                    'time': '9:00AM - 10:00AM',
+                    'time': '9:00AM',
                     'details': 'breakfastkiwahwdoiuahewfosehfoaeshfaiuwhdaiuwhdiuawd',
                     'color': 'green'
                 },
                 '1': {
-                    'time': '5:00PM - 9:00PM',
+                    'time': '5:00PM',
                     'details': 'Meeting',
                     'color': 'lightblue'
-                }
-            }
-        },
-        'december': {
-            '3': {
-                '0': {
-                    'time': '9:00AM - 10:00AM',
-                    'details': 'this is an event',
-                    'color': 'gold'
-                }
-            }
-        }
-    },
-    '2025': {
-        'august': {
-            '4': {
-                '0': {
-                    'time': 'all day',
-                    'details': 'birtbay :)',
-                    'color': 'gray'
                 }
             }
         }
@@ -179,19 +157,19 @@ function setCalendar(month, year) {
     for (let i = 0; i < daysInMonth; i++) {
         let calendarBox = document.createElement("div");
         calendarBox.classList.add("calendar-box");
-        calendarBox.onclick = () => { selectDay(calendarBox, i + 1, monthName, year); };
+        calendarBox.onclick = () => { selectDay(calendarBox, i + 1, month + 1, year); };
 
         // If the calendar box is today
         // ... select the calendar box
         if (now.getDate() - 1 == i && now.getMonth() == month && now.getFullYear() == year) {
-            selectDay(calendarBox, i + 1, monthName, year);
+            selectDay(calendarBox, i + 1, month + 1, year);
         }
 
         // Load calendar box events
         let eventHTML = `<div class="calendar-box-events">`;
         let eventData = undefined;
         try {
-            eventData = JSONEventData[String(year)][monthName.toLowerCase()][String(i + 1)];
+            eventData = JSONEventData[String(year)][String(month + 1)][String(i + 1)];
             if (eventData != undefined) {
                 // https://stackoverflow.com/questions/29032525/how-to-access-first-element-of-json-object-array
                 let eventCount = 0;
@@ -224,7 +202,7 @@ function goToPreviousMonth() {
     setCalendar(newMonth, newYear);
 }
 
-function selectDay(calendarBox, day, monthName, year) {
+function selectDay(calendarBox, day, month, year) {
     // Set the input calendar box as selected
     if (selectedCalendarBox != undefined) {
         selectedCalendarBox.classList.remove("selected");
@@ -236,7 +214,7 @@ function selectDay(calendarBox, day, monthName, year) {
     let eventData = undefined;
     sidebarEvents.innerHTML = "";
     try {
-        eventData = JSONEventData[String(year)][monthName.toLowerCase()][String(day)];
+        eventData = JSONEventData[String(year)][String(month)][String(day)];
         if (eventData != undefined) {
             // https://stackoverflow.com/questions/29032525/how-to-access-first-element-of-json-object-array
             let eventCount = 0;
@@ -321,6 +299,101 @@ function clickProfileButton() {
     selectProfileContent(profileAccountButton, profileAccountTab);
 }
 
+function clickAddEventButton() {
+    keyboard.classList.add("shown");
+    keyboard.classList.remove("hidden");
+
+    nameTextBoxParent.classList.add("shown");
+    dateTextBoxParent.classList.add("shown");
+    timeTextBoxParent.classList.add("shown");
+
+    isAddingEvent = true;
+}
+
+function clickAddTaskButton() {
+    keyboard.classList.add("shown");
+    keyboard.classList.remove("hidden");
+
+    nameTextBoxParent.classList.add("shown");
+    dateTextBoxParent.classList.add("hidden");
+    timeTextBoxParent.classList.add("hidden");
+
+    isAddingEvent = false;
+}
+
+function clickKeyboardButton(key) {
+    if (selectedKeyboardTextBox != undefined) {
+        if (key == 'backspace') {
+            selectedKeyboardTextBox.innerHTML = selectedKeyboardTextBox.innerHTML.slice(0, -1);
+        } else {
+            selectedKeyboardTextBox.innerHTML += key;
+        }
+    }
+}
+
+function clickKeyboardCancelButton() {
+    keyboard.classList.add("hidden");
+    keyboard.classList.remove("shown");
+
+    nameTextBox.innerHTML = "";
+    dateTextBox.innerHTML = "";
+    timeTextBox.innerHTML = "";
+
+    selectKeyboardTextBox(undefined);
+}
+
+function clickKeyboardSubmitButton() {
+    if (isAddingEvent) {
+        let dateArray = dateTextBox.innerHTML.split("/");
+        let newEventObject = {};
+        newEventObject['time'] = `${timeTextBox.innerHTML}`;
+        newEventObject['details'] = `${nameTextBox.innerHTML}`;
+        newEventObject['color'] = `#${Math.floor(Math.random() * 16777215).toString(16)}`;
+
+        console.log(newEventObject);
+
+        if (JSONEventData[dateArray[2]] == undefined) {
+            JSONEventData[dateArray[2]] = {};
+        }
+
+        if (JSONEventData[dateArray[2]][dateArray[0]] == undefined) {
+            JSONEventData[dateArray[2]][dateArray[0]] = {};
+        }
+
+        if (JSONEventData[dateArray[2]][dateArray[0]][dateArray[1]] == undefined) {
+            JSONEventData[dateArray[2]][dateArray[0]][dateArray[1]] = {};
+        }
+
+        let newEventIndex = Object.keys(JSONEventData[dateArray[2]][dateArray[0]][dateArray[1]]).length;
+        JSONEventData[dateArray[2]][dateArray[0]][dateArray[1]][`${newEventIndex}`] = newEventObject;
+
+        setCalendar(now.getMonth(), now.getFullYear());
+    } else {
+        let newTaskIndex = Object.keys(JSONTaskData).length;
+        let newTaskObject = {};
+        newTaskObject['details'] = `${nameTextBox.innerHTML}`;
+        newTaskObject['isDone'] = false;
+
+        JSONTaskData[`${newTaskIndex}`] = newTaskObject;
+
+        updateTasks();
+    }
+
+    clickKeyboardCancelButton();
+}
+
+function selectKeyboardTextBox(element) {
+    if (selectedKeyboardTextBox != undefined) {
+        selectedKeyboardTextBox.classList.remove("selected");
+    }
+
+    if (element != undefined) {
+        element.classList.add("selected");
+    }
+
+    selectedKeyboardTextBox = element;
+}
+
 function selectProfileContent(button, element) {
     if (selectedProfileContent != undefined) {
         selectedProfileContent.classList.add("hidden");
@@ -356,4 +429,14 @@ function selectContent(element) {
     }
 
     selectedContent = element;
+}
+
+// https://stackoverflow.com/questions/196972/convert-string-to-title-case-with-javascript
+function toTitleCase(str) {
+    return str.replace(
+        /\w\S*/g,
+        function(txt) {
+            return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+        }
+    );
 }

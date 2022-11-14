@@ -55,7 +55,7 @@
                     <span id="js-calendar-year"></span>
                 </div>
                 <span class="calendar-seek-button" onclick="goToNextMonth();">&#62;</span>
-                <span class="calendar-add-button" onclick="clickAddButton();">+</span>
+                <span class="calendar-add-button" onclick="clickAddEventButton();">+</span>
             </div>
             <div class="calendar-days">
                 <span class="calendar-day">S</span>
@@ -70,7 +70,7 @@
         </div>
         <div id="js-tasks" class="hidden">
             <div id="js-tasks-content"></div>
-            <span class="tasks-add-button">+</span>
+            <span class="tasks-add-button" onclick="clickAddTaskButton();">+</span>
         </div>
         <div id="js-weather" class="hidden">
             <img src="media/weather-tab.png">
@@ -88,6 +88,24 @@
             <img id="js-profile-connections" class="hidden" src="media/profile-connections-tab.png">
         </div>
         <div id="js-keyboard" class="hidden">
+            <div class="keyboard-text-boxes">
+                <div id="js-keyboard-name">
+                    <h1>Name</h1>
+                    <div id="js-keyboard-name-box" class="keyboard-text-box" onclick="selectKeyboardTextBox(this);"></div>
+                </div>
+                <div id="js-keyboard-date">
+                    <h1>Date</h1>
+                    <div id="js-keyboard-date-box" class="keyboard-text-box" onclick="selectKeyboardTextBox(this);"></div>
+                </div>
+                <div id="js-keyboard-time">
+                    <h1>Time</h1>
+                    <div id="js-keyboard-time-box" class="keyboard-text-box" onclick="selectKeyboardTextBox(this);"></div>
+                </div>
+            </div>
+            <div class="keyboard-buttons">
+                <div class="keyboard-button" onclick="clickKeyboardCancelButton();">Cancel</div>
+                <div class="keyboard-button" onclick="clickKeyboardSubmitButton();">Submit</div>
+            </div>
             <div class="keyboard">
                 <div class="keyboard-row">
                     <span class="keyboard-key" onclick="clickKeyboardButton('1');">1</span>
@@ -133,10 +151,12 @@
                     <span class="keyboard-key" onclick="clickKeyboardButton('b');">b</span>
                     <span class="keyboard-key" onclick="clickKeyboardButton('n');">n</span>
                     <span class="keyboard-key" onclick="clickKeyboardButton('m');">m</span>
-                    <span class="keyboard-key" onclick="clickKeyboardButton('<');" style="aspect-ratio: unset; width: 195px;">backspace</span>
+                    <span class="keyboard-key" onclick="clickKeyboardButton('/');">/</span>
+                    <span class="keyboard-key" onclick="clickKeyboardButton(':');">:</span>
                 </div>
                 <div class="keyboard-row">
-                    <span class="keyboard-key" onclick="clickKeyboardButton('_');" style="aspect-ratio: unset; width: 500px; height: 55px;">space</span>
+                    <span class="keyboard-key" onclick="clickKeyboardButton(' ');" style="aspect-ratio: unset; width: 450px; height: 55px;">space</span>
+                    <span class="keyboard-key" onclick="clickKeyboardButton('backspace');" style="aspect-ratio: unset; width: 195px;">backspace</span>
                 </div>
             </div>
         </div>
