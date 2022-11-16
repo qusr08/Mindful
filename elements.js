@@ -19,11 +19,14 @@ let selectedContent = undefined;
 
 let calendar = document.getElementById("js-calendar");
 let calendarContent = document.getElementById("js-calendar-content");
+let calendarDays = document.getElementById("js-calendar-days");
+let weeklyCalendarContent = document.getElementById("js-weekly-calendar-content");
 let calendarMonth = document.getElementById("js-calendar-month");
 let calendarYear = document.getElementById("js-calendar-year");
 let selectedCalendarBox = undefined;
 
 let weather = document.getElementById("js-weather");
+let weather7day = document.getElementById("js-weather-7day");
 
 let profile = document.getElementById("js-profile");
 let profileAccountButton = document.getElementById("js-profile-account-button");
@@ -92,12 +95,12 @@ let JSONEventData = {
             '26': {
                 '0': {
                     'time': '9:00AM',
-                    'details': 'breakfastkiwahwdoiuahewfosehfoaeshfaiuwhdaiuwhdiuawd',
+                    'details': 'Book Club Meeting',
                     'color': 'green'
                 },
                 '1': {
                     'time': '5:00PM',
-                    'details': 'Meeting',
+                    'details': 'Dinner with Caitlin',
                     'color': 'lightblue'
                 }
             }
@@ -250,9 +253,9 @@ function updateTasks() {
     let task = undefined;
     while ((task = JSONTaskData[String(taskCount)]) != undefined) {
         let newTask = `
-            <div class="task">
-                <span class="task-bullet ${task.isDone ? 'done' : ''}">○</span>
-                <span class="task-details ${task.isDone ? 'done' : ''}">${task.details}</span>
+            <div class="task ${task.isDone ? 'done' : ''}" onclick="toggleTaskDone(this);">
+                <span class="task-bullet">○</span>
+                <span class="task-details">${task.details}</span>
             </div>
         `;
 
@@ -299,6 +302,26 @@ function clickProfileButton() {
     selectProfileContent(profileAccountButton, profileAccountTab);
 }
 
+function clickWeeklyCalendarButton() {
+    weeklyCalendarContent.classList.remove("hidden");
+    weeklyCalendarContent.classList.add("shown");
+
+    calendarDays.classList.remove("shown");
+    calendarDays.classList.add("hidden");
+    calendarContent.classList.remove("shown");
+    calendarContent.classList.add("hidden");
+}
+
+function clickMonthlyCalendarButton() {
+    weeklyCalendarContent.classList.remove("shown");
+    weeklyCalendarContent.classList.add("hidden");
+
+    calendarDays.classList.remove("hidden");
+    calendarDays.classList.add("shown");
+    calendarContent.classList.remove("hidden");
+    calendarContent.classList.add("shown");
+}
+
 function clickAddEventButton() {
     keyboard.classList.add("shown");
     keyboard.classList.remove("hidden");
@@ -329,6 +352,10 @@ function clickKeyboardButton(key) {
             selectedKeyboardTextBox.innerHTML += key;
         }
     }
+}
+
+function clickWeather7DayButton() {
+    selectContent(weather7day);
 }
 
 function clickKeyboardCancelButton() {
@@ -429,6 +456,14 @@ function selectContent(element) {
     }
 
     selectedContent = element;
+}
+
+function toggleTaskDone(task) {
+    if (task.classList.contains("done")) {
+        task.classList.remove("done");
+    } else {
+        task.classList.add("done");
+    }
 }
 
 // https://stackoverflow.com/questions/196972/convert-string-to-title-case-with-javascript

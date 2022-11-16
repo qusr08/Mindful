@@ -147,12 +147,12 @@ body {
     overflow: hidden;
 }
 
-.task-details.done {
+.task.done>.task-details {
     text-decoration: line-through;
     color: gray;
 }
 
-.task-bullet.done {
+.task.done>.task-bullet {
     color: gray;
 }
 
@@ -236,6 +236,16 @@ body {
 
 /* #endregion */
 
+.weather-7day-button {
+    /* background-color: green; */
+    width: 200px;
+    height: 3em;
+    position: absolute;
+    top: 585px;
+    left: 300px;
+    cursor: pointer;
+}
+
 
 /* #region Calendar */
 
@@ -285,7 +295,7 @@ body {
     font-size: 5em;
 }
 
-.calendar-days {
+#js-calendar-days {
     display: grid;
     align-self: center;
     justify-self: center;

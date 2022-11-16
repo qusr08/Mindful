@@ -39,15 +39,15 @@
         </div>
         <div class="greeting">
             <img id="profile-button" onclick="clickProfileButton();" src="media/profile-button.png">
-            <span>Hello, Gaby</span>
+            <span>Hello, Barbara</span>
         </div>
     </div>
     <div class="content">
         <div id="js-calendar" class="hidden">
             <div class="calendar-header">
                 <div class="calendar-view-buttons">
-                    <img src="media/monthly-calendar-button.png">
-                    <img src="media/weekly-calendar-button.png">
+                    <img src="media/monthly-calendar-button.png" onclick="clickMonthlyCalendarButton();">
+                    <img src="media/weekly-calendar-button.png" onclick="clickWeeklyCalendarButton();">
                 </div>
                 <span class="calendar-seek-button" onclick="goToPreviousMonth();">&#60;</span>
                 <div class="calendar-title">
@@ -57,7 +57,7 @@
                 <span class="calendar-seek-button" onclick="goToNextMonth();">&#62;</span>
                 <span class="calendar-add-button" onclick="clickAddEventButton();">+</span>
             </div>
-            <div class="calendar-days">
+            <div id="js-calendar-days">
                 <span class="calendar-day">S</span>
                 <span class="calendar-day">M</span>
                 <span class="calendar-day">T</span>
@@ -67,6 +67,7 @@
                 <span class="calendar-day">S</span>
             </div>
             <div id="js-calendar-content"></div>
+            <img id="js-weekly-calendar-content" class="hidden" src="media/weekly-calendar-tab.png">
         </div>
         <div id="js-tasks" class="hidden">
             <div id="js-tasks-content"></div>
@@ -74,6 +75,10 @@
         </div>
         <div id="js-weather" class="hidden">
             <img src="media/weather-tab.png">
+            <div class="weather-7day-button" onclick="clickWeather7DayButton();"></div>
+        </div>
+        <div id="js-weather-7day" class="hidden">
+            <img src="media/weather-7day-tab.png">
         </div>
         <div id="js-profile" class="hidden">
             <div class="profile-buttons">
