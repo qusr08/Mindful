@@ -32,7 +32,7 @@ body {
     display: grid;
     grid-template-columns: var(--sidebar-size) var(--content-size) var(--homebutton-size);
     grid-template-areas: "sidebar content home";
-    cursor: default;
+    cursor: none;
 }
 
 .content {
@@ -51,7 +51,7 @@ body {
     height: 2.5em;
     align-self: center;
     justify-self: end;
-    cursor: pointer;
+    /* cursor: pointer; */
     margin: var(--body-padding);
 }
 
@@ -94,7 +94,7 @@ body {
     aspect-ratio: 1;
     height: 1em;
     margin-right: 10px;
-    cursor: pointer;
+    /* cursor: pointer; */
 }
 
 #js-sidebar-events,
@@ -162,7 +162,7 @@ body {
     right: -8px;
     bottom: -8px;
     height: 2.5em;
-    cursor: pointer;
+    /* cursor: pointer; */
     aspect-ratio: 1;
 }
 
@@ -226,7 +226,7 @@ body {
 
 .profile-button {
     font-size: 2em;
-    cursor: pointer;
+    /* cursor: pointer; */
 }
 
 .profile-button.selected {
@@ -243,7 +243,7 @@ body {
     position: absolute;
     top: 585px;
     left: 300px;
-    cursor: pointer;
+    /* cursor: pointer; */
 }
 
 
@@ -291,7 +291,7 @@ body {
 .calendar-add-button,
 .tasks-add-button {
     background-color: transparent;
-    cursor: pointer;
+    /* cursor: pointer; */
     font-size: 5em;
 }
 
@@ -317,7 +317,7 @@ body {
     font-size: 2.5em;
     width: var(--calendar-box-size);
     align-items: center;
-    cursor: pointer;
+    /* cursor: pointer; */
     transition: background-color var(--transition-speed) ease, color var(--transition-speed) ease;
 }
 
@@ -389,7 +389,7 @@ body {
     border-radius: 10px;
     width: 55px;
     text-align: center;
-    cursor: pointer;
+    /* cursor: pointer; */
 }
 
 .keyboard-text-boxes {
@@ -409,7 +409,7 @@ body {
     min-width: 300px;
     width: 300px;
     height: 1.5em;
-    cursor: pointer;
+    /* cursor: pointer; */
     padding: 3px;
     text-overflow: ellipsis;
     overflow: hidden;
@@ -433,7 +433,7 @@ body {
     font-size: 2em;
     width: 200px;
     text-align: center;
-    cursor: pointer;
+    /* cursor: pointer; */
 }
 
 

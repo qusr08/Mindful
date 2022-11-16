@@ -64,11 +64,11 @@ let JSONTaskData = {
     },
     '1': {
         'details': 'Take out trash',
-        'isDone': true
+        'isDone': false
     },
     '2': {
         'details': 'Vacuum downstairs',
-        'isDone': true
+        'isDone': false
     }
 }
 
@@ -250,10 +250,11 @@ function updateTasks() {
 
     // https://stackoverflow.com/questions/29032525/how-to-access-first-element-of-json-object-array
     let taskCount = 0;
+    let foundTaskToAdd = false;
     let task = undefined;
     while ((task = JSONTaskData[String(taskCount)]) != undefined) {
         let newTask = `
-            <div class="task ${task.isDone ? 'done' : ''}" onclick="toggleTaskDone(this);">
+            <div class="task ${task.isDone ? 'done' : ''}" index="${taskCount}" onclick="toggleTaskDone(this);">
                 <span class="task-bullet">○</span>
                 <span class="task-details">${task.details}</span>
             </div>
@@ -261,13 +262,14 @@ function updateTasks() {
 
         if (!task.isDone) {
             sidebarTasks.innerHTML += newTask;
+            foundTaskToAdd = true;
         }
         tasksContent.innerHTML += newTask;
 
         taskCount++;
     }
 
-    if (taskCount == 0) {
+    if (taskCount == 0 || !foundTaskToAdd) {
         let noTasks = `
             <div class="task">
                 <span class="task-details">No tasks!</span>
@@ -275,7 +277,6 @@ function updateTasks() {
         `;
 
         sidebarTasks.innerHTML = noTasks;
-        tasksContent.innerHTML = noTasks;
     }
 }
 
@@ -326,6 +327,9 @@ function clickAddEventButton() {
     keyboard.classList.add("shown");
     keyboard.classList.remove("hidden");
 
+    nameTextBoxParent.classList.remove("hidden");
+    dateTextBoxParent.classList.remove("hidden");
+    timeTextBoxParent.classList.remove("hidden");
     nameTextBoxParent.classList.add("shown");
     dateTextBoxParent.classList.add("shown");
     timeTextBoxParent.classList.add("shown");
@@ -337,6 +341,9 @@ function clickAddTaskButton() {
     keyboard.classList.add("shown");
     keyboard.classList.remove("hidden");
 
+    nameTextBoxParent.classList.remove("hidden");
+    dateTextBoxParent.classList.remove("shown");
+    timeTextBoxParent.classList.remove("shown");
     nameTextBoxParent.classList.add("shown");
     dateTextBoxParent.classList.add("hidden");
     timeTextBoxParent.classList.add("hidden");
@@ -376,8 +383,6 @@ function clickKeyboardSubmitButton() {
         newEventObject['time'] = `${timeTextBox.innerHTML}`;
         newEventObject['details'] = `${nameTextBox.innerHTML}`;
         newEventObject['color'] = `#${Math.floor(Math.random() * 16777215).toString(16)}`;
-
-        console.log(newEventObject);
 
         if (JSONEventData[dateArray[2]] == undefined) {
             JSONEventData[dateArray[2]] = {};
@@ -464,6 +469,9 @@ function toggleTaskDone(task) {
     } else {
         task.classList.add("done");
     }
+
+    JSONTaskData[String(task.getAttribute('index'))]['isDone'] = task.classList.contains("done");
+    updateTasks();
 }
 
 // https://stackoverflow.com/questions/196972/convert-string-to-title-case-with-javascript
